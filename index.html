@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Ngoding</title>
+    <script src="jquery.min.js"></script>
+    <script src="jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jquery-ui.min.css">
+    <style>
+        #clear {
+            clear: both;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: rgb(9, 83, 173);
+        }
+
+        #header {
+            width: 100%;
+            height: 40px;
+            /* border: 1px solid grey; */
+            padding-top: 10px;
+        }
+        
+        #divLogo{
+            background-color: rgb(23, 190, 113);
+            height: 40px;
+            width: 150px;
+        }
+        #logo {
+            font-family: Helvetica, sans-serif;
+            font-size: 25px;
+            font-weight: bold;
+            float: left;
+            
+            position: relative;
+            top: 3px;
+            left: 15px;
+            padding-left: 5px;
+        }
+
+        #toggleContainer {
+            /* background-color: rgb(59, 205, 231); */
+            height: 40px;
+            width: 330px;
+            margin: 0 auto;
+            /* position: relative;
+            left: 75px; */
+        }
+
+        .toggleButton {
+            float: left;
+            padding: 5px;
+            /* border: 1px solid gray; */
+            background-color: rgb(9, 83, 173);
+            border-right: none;
+        }
+
+        /* #html {
+            border-radius: 7px;
+        }
+
+        #css {
+            border-radius: 7px;
+        }
+
+        #javascript {
+            border-radius: 7px;
+        }
+
+        /* #output {
+            border-radius: 7px; */
+            /* border-right: 1px solid gray; 
+        } */
+
+        span {
+            font-size: 25px;
+            color: wheat;
+        }
+
+        .activeToggle {
+            background-color: rgba(20, 149, 235, 0.555);
+        }
+
+        .highlightedButton {
+            background-color: rgba(20, 149, 235, 0.397);
+        }
+
+        textarea {
+
+            resize: none;
+            border-top: none;
+            border-bottom: none;
+            border-left: none;
+            background-color: rgba(0, 0, 0, 0.918);
+            color: rgb(241, 241, 241);
+        }
+
+        .panel {
+            width: 50%;
+            float: left;
+            margin-top: 10px;
+        }
+
+        iframe {
+            /* border: none; */
+            background-color: rgb(219, 219, 219);
+            margin-left: 5px;
+           
+            
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <div id="divLogo">
+            <span id="logo">Ngoding</span>
+        </div>
+        <div id="toggleContainer">
+            <div class="toggleButton activeToggle" id="html">
+                <span>HTML</span>
+            </div>
+            <div class="toggleButton" id="css">
+                <span>CSS</span>
+            </div>
+            <div class="toggleButton" id="javascript">
+                <span>Javascript</span>
+            </div>
+            <div class="toggleButton activeToggle" id="output">
+                <span>Output</span>
+            </div>
+        </div>
+    </div>
+    <div id="clear"></div>
+    <div id="bodyContainer">
+        <textarea id="htmlPanel" class="panel" placeholder="Tulis HTML Kamuh disini"></textarea>
+        <textarea id="cssPanel" class="panel hidden" placeholder="Disini buat nulis CSS nyah"></textarea>
+        <textarea id="javascriptPanel" class="panel hidden" placeholder="Kamu bisa edit HTML dengan Javascript juga disinih"></textarea>
+        <iframe src="" id="outputPanel" class="panel"></iframe>
+    </div>
+    <script>
+        //Fungsi update output 
+        function updateOutput() {
+            $('iframe').contents().find('html').html("<html><head><style type=text/css>" + $('#cssPanel').val() +"body{margin-left: 200}"+
+                "</style></head><body>" + $('textarea').val() +"</body></html");
+                document.getElementById('outputPanel').contentWindow.eval($('#javascriptPanel').val());
+               
+        };
+
+        $('.panel').height($(window).height() - $('#header').height() - 65);
+
+        $('.panel').width(($(window).width() / 2) - 7);
+        updateOutput();
+
+        //event untuk mengupdate output secara bersamaan ketika textarea berubah
+        $('textarea').on('change keyup paste', function () {
+
+            updateOutput();
+
+        });
+
+
+
+
+        $('.toggleButton').hover(function () {
+            $(this).addClass('highlightedButton');
+        }, function () {
+            $(this).removeClass('highlightedButton');
+        });
+        $('.toggleButton').click(function () {
+            var panelID = $(this).attr('id') + 'Panel';
+            $(this).toggleClass('activeToggle');
+            $(this).removeClass('highlightedButton');
+            $('#' + panelID).toggleClass('hidden');
+            var hitungActivPanel = 4 - ($('.hidden').length);
+            $('.panel').width(($(window).width() / hitungActivPanel) - 7);
+        });
+    </script>
+</body>
+
+</html>
